@@ -10,8 +10,10 @@ public interface TodoService {
     //guardar
     Todo save(Todo todo);
     //eliminar
-    void delete(Long id);
+    String delete(Long id);
     //obtener
     Optional<Todo> getId(Long id);
+    //actualizar
+    Todo update(Todo todo);
 
 }

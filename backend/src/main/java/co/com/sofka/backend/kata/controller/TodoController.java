@@ -3,6 +3,8 @@ package co.com.sofka.backend.kata.controller;
 import co.com.sofka.backend.kata.model.Todo;
 import co.com.sofka.backend.kata.service.impl.TodoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -16,31 +18,40 @@ public class TodoController {
     private TodoServiceImpl todoServiceImpl;
 
     @GetMapping("/list")
-    public Iterable<Todo> list(){
-        return todoServiceImpl.list();
+    public ResponseEntity<?> list() {
+        Iterable<Todo> list = todoServiceImpl.list();
+        return (list != null) ? new ResponseEntity<>(list, HttpStatus.OK) :
+                new ResponseEntity<>("no hay informacion", HttpStatus.NOT_FOUND);
+
     }
+
     @PostMapping("/save")
-    public Todo save( @RequestBody Todo todo){
-        return todoServiceImpl.save(todo);
+    public ResponseEntity<?> save(@RequestBody Todo todo) {
+        return (todo != null) ? new ResponseEntity<>(todoServiceImpl.save(todo), HttpStatus.CREATED):
+                new ResponseEntity<>("No se encuentra el cuerpo del todo", HttpStatus.NOT_FOUND);
     }
+
     @PutMapping("/update")
-    public Todo update (@RequestBody Todo todo){
-        if(todo.getId() != null){
-            todoServiceImpl.save(todo);
-        }
-        throw new RuntimeException("No existe el todo");
+    public ResponseEntity<?> update(@RequestBody Todo todo) {
+       Optional<Todo> todoExist = todoServiceImpl.getId(todo.getId());
+       return (todoExist.isPresent()) ? new ResponseEntity<>(todoServiceImpl.update(todo), HttpStatus.OK) :
+               new ResponseEntity<>("No existe el todo a actualizar", HttpStatus.NOT_FOUND);
     }
+
     @GetMapping("/get/{id}")
-    public Optional<Todo> getId(@PathVariable("id") Long id){
-        return todoServiceImpl.getId(id);
+    public ResponseEntity<?> getId(@PathVariable("id") Long id) {
+        Optional<Todo> todoId = todoServiceImpl.getId(id);
+        return (todoId.isPresent()) ? new ResponseEntity<>(todoId, HttpStatus.OK) :
+                new ResponseEntity<>("No existe el id que ingresaste", HttpStatus.NOT_FOUND);
     }
+
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable("id") Long id){
-        todoServiceImpl.delete(id);
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        Optional<Todo> todoId = todoServiceImpl.getId(id);
+        return (todoId.isPresent()) ? new ResponseEntity<>(todoServiceImpl.delete(id), HttpStatus.NO_CONTENT):
+                new ResponseEntity<>("No existe el id que quieres eliminar", HttpStatus.NOT_FOUND);
+
     }
-
-
-
 
 
 }
