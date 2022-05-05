@@ -1,6 +1,37 @@
 .App {
   text-align: center;
+  
+  
 }
+.container {
+  background-color: rgb(182, 182, 219);
+}
+
+html, body {
+  background-color:rgb(143, 143, 226);
+}
+
+input {
+  right: 13px;
+  margin: 12px;
+  padding: 12px;
+  border-width: 12px;
+
+}
+
+.table {
+  
+  margin: 12px;
+  padding: 12px;
+  border-width: 5px;
+  
+}
+
+button{
+  text-align: center;
+  right: 15%;
+}
+
 
 .App-logo {
   height: 40vmin;
@@ -32,6 +63,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

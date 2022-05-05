@@ -68,6 +68,8 @@ const Form = () => {
   return (
     <form ref={formRef}>
       <input
+        className="input-group mb-3"
+        placeholder="agregue una tarea"
         type="text"
         name="name"
         defaultValue={item.name}
@@ -76,10 +78,10 @@ const Form = () => {
         }}
       ></input>
       {
-        item.id && <button onClick={onEdit}>Actualizar</button>
+        item.id && <button className="btn btn-primary" onClick={onEdit}>Actualizar</button>
       }
       {
-        !item.id && <button onClick={onAdd}>Agregar</button>
+        !item.id && <button className="btn btn-primary" onClick={onAdd}>Agregar</button>
       }
     </form>
   );
@@ -112,7 +114,7 @@ const List = () => {
   };
 
   return (
-    <table>
+    <table className="table">
       <thead>
         <tr>
           <td>ID</td>
@@ -128,10 +130,10 @@ const List = () => {
               <td>{todo.name}</td>
               <td>{todo.isCompleted === true ? 'si' : 'No'}</td>
               <td>
-                <button onClick={() => onDelete(todo.id)}>Eliminar</button>
+                <button className="btn btn-warning" onClick={() => onEdit(todo)}>Editar</button>
               </td>
               <td>
-                <button onClick={() => onEdit(todo)}>Editar</button>
+                <button className="btn btn-danger" onClick={() => onDelete(todo.id)}>Eliminar</button>
               </td>
             </tr>
           );
@@ -182,10 +184,14 @@ const StoreProvider = ({ children }) => {
 function App() {
 
   return (
-    <StoreProvider>
-      <Form />
-      <List />
-    </StoreProvider>
+    <div className="container" >
+      <StoreProvider>
+        <Form />
+        <List />
+      </StoreProvider>
+
+    </div>
+
   );
 };
 export default App;
